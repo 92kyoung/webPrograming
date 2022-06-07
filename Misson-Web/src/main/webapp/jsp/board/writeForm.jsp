@@ -11,7 +11,7 @@
 <script>
 	$(document).ready(function(){
 		
-		$('#listBtn').click(function(){
+		$('#listBtn').click(function(){/* 목록 버튼을 누르면 list.jsp(전체 게시글 조회) 페이지로 날라감 */
 			location.href="list.jsp" 
 		})
 		
@@ -86,4 +86,8 @@
 		</form>
 	</div>
 </body>
+<!-- 
+값을 write.jsp 페이지로 보냄
+paylode에 FormData 형식으로 값들이 날라감 -->
 </html>
+

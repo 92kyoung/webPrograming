@@ -72,7 +72,7 @@
 	   %>
 		    <tr>
 		    	<td><%= no %></td>  <!-- scriptlet(<% %>) 을 사용해서 변수를 바로 직접 넣는다  -->
-		    	<td><%= title %></td>
+		    	<td><a href="detail.jsp?no=<%= no %>"><%= title %></a></td>
 		    	<td><%= writer %></td>
 		    	<td><%= regDate %></td>
 		    	
