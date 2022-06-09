@@ -1,58 +1,124 @@
+<%@page import="kr.ac.kopo.board.vo.BoardVO"%>
+<%@page import="kr.ac.kopo.board.dao.BoardDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="kr.ac.kopo.util.ConnectionFactory"%>
 <%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%  
 // localhost:9999/Mission-Web/jsp/board/detail.jsp?no=2
 
+/*
+	작업순서 (1,2-java 3-html)
+	1. no 파라미터 추출
+	2. 추출된 no에 해당 게시물 조회(t_board)
+	3. 조회된 게시물을 화면에 출력
+*/
+
+
 //번호 추출 해서 db t_board 에 해당하는 정보를 가져오기
 //그리고 화면에 출력하기
-	String number = request.getParameter("no");
+	int no = Integer.parseInt(request.getParameter("no"));
+
+	BoardDAO dao = new BoardDAO();
+	BoardVO board =  dao.selectByNo(no);
+	
+	// 저 보드를 화면에 출력하고 싶다 => 공유영역에 등록을 해야한다. 
+			
+	pageContext.setAttribute("board", board);
+	
+
+/* 
+
 	Connection conn = new ConnectionFactory().getConnection();
 	StringBuilder sql = new StringBuilder();
-	sql.append("select no,title,writer,content,view_cnt,reg_date from t_board where no=?");
+	sql.append("select no,title,writer,content,view_cnt,t0_char(reg_date, 'yyyy-mm-dd') as reg_date from t_board where no=?");
 	
 	//실행객체
 	PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 	
-	pstmt.setString(1,number);
+	pstmt.setString(1,no);
 	ResultSet rs = pstmt.executeQuery();
-
+ */
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>게시판 글 상세 페이지</title>
+
+<script>
+	function doAction(type){
+		switch(type){
+		case'U':
+			/* 수정하고자하는 번호를 넘겨야함 
+			  no는 detail.jsp 의 파라미터로 넘어온 애임
+			  그래서 request.getParamer 의 el 매핑객체인
+			  param을 사용해서 no를 가져온다. 
+			*/
+			location.href="update.jsp?no=${param.no}"
+			break;
+		case'D':
+			if(confirm("정말 삭제하시겠습니까?")){
+			location.href="delete.jsp?no=${param.no}"
+			}
+			
+			break;
+		case'L':
+			/* 목록으로 이동 로케이션 객체 이용 */
+			location.href="list.jsp"
+			break;
+		}
+	}
+
+</script>
+
+
 </head>
 <body>
 	<div align="center">
 	 <hr>
 	 	<h2>게시판 상세</h2>
-	 
 	 <hr>
+	 
+	 <table border="1" style="width: 80%">
+	 		<tr>
+				<th width="25%">번호</th>
+				<td>${ board.no }</td>
+			</tr>
+			
+			<tr>
+				<th width="25%">제목</th>
+				<td>${ board.content}</td>
+			</tr>
+			
+			<tr>
+				<th width="25%">작성자</th>
+				<td>${ board.writer }</td>
+			</tr>
+			
+			<tr>
+				<th width="25%">내용</th>
+				<td>${ board.content }</td>
+			</tr>
+			
+			<tr>
+				<th width="25%">조회수</th>
+				<td>${ board.viewCnt }</td>
+			</tr>
+			
+			<tr>
+				<th width="25%">등록일</th>
+				<td>${ board.regDate }</td>
+			</tr> 
+	 </table>
+	<button onclick="doAction('U')">수 정</button>&nbsp;&nbsp;
+	<button onclick="doAction('D')">삭 제</button>&nbsp;&nbsp;
+	<button onclick="doAction('L')">목 록</button>&nbsp;&nbsp;
 	</div>
 	
-    <% 
-	   	 while(rs.next()){ 
-	   		 int no= rs.getInt("no");
-	   		 String title = rs.getString("title");
-	   		 String writer = rs.getString("writer");
-	   		 String content = rs.getString("content");
-	   		 String view_cnt = rs.getString("view_cnt");
-	   		 String regDate = rs.getString("reg_date");		 
-	 %>	
-	
-	<%= no %>
-	<%= title %>
-	<%= writer %>
-	<%= content %>
-	<%= view_cnt %>
-	<%= regDate %>
-	<%
-	   	 }
-	%>
+		
 </body>
 </html>

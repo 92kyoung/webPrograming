@@ -1,3 +1,5 @@
+<%@page import="kr.ac.kopo.board.vo.BoardVO"%>
+<%@page import="kr.ac.kopo.board.dao.BoardDAO"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="kr.ac.kopo.util.ConnectionFactory"%>
 <%@page import="java.sql.Connection"%>
@@ -17,20 +19,35 @@ String title = request.getParameter("title");
 String writer = request.getParameter("writer");
 String content = request.getParameter("content");
 
+
+BoardVO board = new BoardVO();
+board.setTitle(title);
+board.setWriter(writer);
+board.setContent(content);
+
+BoardDAO dao = new BoardDAO();
+dao.insertBoard(board);
+
+
+/*
+이 코드를 BoardDAO에 옮김
+
 Connection conn = new ConnectionFactory().getConnection();
 
 StringBuilder sql = new StringBuilder();
-/* 시퀀스 다음 값 추출 할 때는 nextval */
+// 시퀀스 다음 값 추출 할 때는 nextval 
 sql.append("insert into t_board(no, title, writer, content) ");
 sql.append(" values(seq_t_board_no.nextval, ?, ?, ?) ");
 PreparedStatement pstmt = conn.prepareStatement(sql.toString());
-pstmt.setString(1, title);/* 첫번째 물음표 자리 */
+
+
+ pstmt.setString(1, title);// 첫번째 물음표 자리 
 pstmt.setString(2, writer);
 pstmt.setString(3, content);
 
 	
 pstmt.executeUpdate();
-	
+ */	
 	
 %>
 
