@@ -71,7 +71,7 @@ public class MemberDAO {
 
 			StringBuilder sql = new StringBuilder();
 			sql.append(
-					"insert into t_member (id,name,password,email_id,email_domain,tel1,tel2,tel3,post,basic_addr,detail_addr) values (?,?,?,?,?,?,?,?,?,?,?) ");
+					"insert into t_member (id,name,password,email_id,email_domain,tel1,tel2,tel3,post,basic_addr,detail_addr,type) values (?,?,?,?,?,?,?,?,?,?,?,?) ");
 
 			pstmt = conn.prepareStatement(sql.toString());
 
@@ -86,7 +86,8 @@ public class MemberDAO {
 			pstmt.setString(9, member.getPost());
 			pstmt.setString(10, member.getBasic_addr());
 			pstmt.setString(11, member.getDetail_addr());
-
+			pstmt.setString(12, member.getType());
+			
 			pstmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -96,7 +97,7 @@ public class MemberDAO {
 			JDBCClose.close(pstmt, conn);
 		}
 	}
-
+   
 	public MemberVO selectById(String id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -140,4 +141,47 @@ public class MemberDAO {
 		}
 		return null;
 	}
-}
+	
+	
+	//로그인 메소드
+	public MemberVO login(MemberVO memberVO) {
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select id,password,name,type from t_member where id=? and password=?");
+		
+		try(
+				Connection conn = new ConnectionFactory().getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+			)
+		{ 
+			pstmt.setString(1, memberVO.getId());
+			pstmt.setString(2, memberVO.getPassword());
+			
+			ResultSet rs = pstmt.executeQuery(); //select니까 executeQuery
+			
+			if(rs.next()) {
+				MemberVO userVO = new MemberVO();
+				userVO.setId(rs.getString("id"));
+				userVO.setPassword(rs.getString("password"));
+				userVO.setName(rs.getString("name"));
+				userVO.setType(rs.getString("type"));
+				
+				return userVO;
+			}
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}	
+//		finally 코드 안써도 됨. 알아서 connection 종료됨
+		return null;
+	}
+	
+}	
+	
+/*
+ * public static void main(String[] args) { MemberVO memberVO = new MemberVO();
+ * 
+ * System.out.println(login(memberVO)); } }
+ */
+

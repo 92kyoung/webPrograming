@@ -5,8 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지 입니다</title>
-<script>
 
+<link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
+<link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
+
+<script>
+/* 
 	function checkForm(){
 		let f = document.writeMemberForm
 		
@@ -31,13 +35,18 @@
 		return true
 		
 	}
-
+ */
 
 
 </script>
+
 </head>
 <body>
-	<div align="center">
+	<header>
+		<jsp:include page="/jsp/include/topMenu.jsp"/>
+	</header>
+	<section>
+		<div align="center">
 	<hr>
 	<h2>회 원 가 입</h2>
 	<hr>
@@ -70,13 +79,19 @@
 				<td><input type="text" name="email_id" size="20"> @
 				    <input type="text" name="email_domain" size="50">
 				</td>
-			
 			</tr>
 			<tr>
 				<th width="25%">전화번호</th>
 				<td><input type="text" name="tel1" size="20">  - 
 					<input type="text" name="tel2" size="20">  - 
 					<input type="text" name="tel3" size="20"></td>
+			</tr>
+			<tr>
+				<th width="25%">회원구분</th>
+				<td>
+					<input type="radio" name="type" value='U'/>일반회원
+					<input type="radio" name="type" value='S'/>슈퍼회원		
+				</td>
 			</tr>
 			<tr>
 				<th width="25%">우편번호</th>
@@ -96,5 +111,11 @@
 	</form>
 	
 	</div>
+	</section>
+	<footer>
+		<%@ include file="/jsp/include/footer.jsp" %> <!-- 지시자 include --> <!--절대경로 : 루트는 보통 localhost:9999를 의미하지만 (xml,include,forward에서만 루트는 Mission-Web을 의미한다)  -->
+	</footer>
 </body>
 </html>
+
+

@@ -23,26 +23,33 @@
 <head>
 <meta charset="UTF-8">
 <title>전체 회원목록</title>
+
+<link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
+<link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
 <script src="/Misson-Web/resource/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div align="center">  <!-- align:center 가운데정렬 -->
+	<header>
+		<jsp:include page="/jsp/include/topMenu.jsp"/>
+	</header>
+	<section>
+		<div align="center">  <!-- align:center 가운데정렬 -->
 		<hr>
 		<h2>전체 회원 조회</h2>
 		<hr>
 		
-		<table border="1" style="width:80%">
+		<table border="1" style="width:100%">
 			<tr>
-				<td width="7%" align="center">id</td>
-				<td width="7%">이름</td>
-				<td width="16%">패스워드</td>
-				<td width="20%">휴대폰번호</td>
-				<td width="20%">우편번호</td>
-				<td width="20%">주소</td>
+				<th width="7%" align="center">id</td>
+				<th width="7%">이름</th>
+				<th width="16%">패스워드</th>
+				<th width="20%">휴대폰번호</th>
+				<th width="20%">우편번호</th>
+				<th width="20%">주소</th>
 		    </tr>
 	 		
-	 		<c:forEach items="${ memberList }" var="member">
-	 		<tr>
+	 		<c:forEach items="${ memberList }" var="member" varStatus="loop">
+	 		<tr <c:if test="${ loop.count mod 2 eq 0 }">class="even"</c:if>>
 	 			<td><a href="detailMember.jsp?id=${member.id}"><c:out value="${member.id} " /></a></td>
 	 			<td><c:out value="${ member.name }"/></td>
 	 			<td><c:out value="${ member.password }"/></td>
@@ -53,8 +60,13 @@
 	 		</c:forEach>
 		</table>
 		<br>
-		<a href="writeMemberForm.jsp">회원가입하기</a>
+		<button onclick="location.href='writeMemberForm.jsp'">회원가입</button>
+		<!-- <a href="writeMemberForm.jsp">회원가입하기</a> -->
 	</div>
+	</section>
+	<footer>
+		<%@ include file="/jsp/include/footer.jsp" %> <!-- 지시자 include --> <!--절대경로 : 루트는 보통 localhost:9999를 의미하지만 (xml,include,forward에서만 루트는 Mission-Web을 의미한다)  -->
+	</footer>
 </body>
 </html>
 

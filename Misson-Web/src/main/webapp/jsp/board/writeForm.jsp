@@ -6,7 +6,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<script src="/Misson-Web/resource/js/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
+<link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
+
+<script src="/Misson-Web/resources/js/jquery-3.6.0.min.js"></script>
 
 <script>
 	$(document).ready(function(){
@@ -46,7 +49,11 @@
 
 </head>
 <body>
-	<div align="center">
+	<header>
+		<jsp:include page="/jsp/include/topMenu.jsp"/>
+	</header>
+	<section>
+		<div align="center">
 		<hr>
 		<h2>새글 등록 폼</h2>
 		<hr>
@@ -78,13 +85,17 @@
 				</tr>						
 			</table>
 				<input type="submit" value="새글등록">&nbsp;&nbsp;
-				<button type="button" id="listBtn">목록</button>
+				<button type="button" id="listBtn" onclick="location.href='list.jsp'">목록</button>
 				<!-- 버튼 타입을 버튼으로 설정안했을 때 오류남
 						버튼 타입을 서브밋으로 인식했기 때문
 						그래서 꼭 버튼 타입을 버튼으로 설정해주어야 한다. 
 				 -->
 		</form>
 	</div>
+	</section>
+	<footer>
+		<%@ include file="/jsp/include/footer.jsp" %> <!-- 지시자 include --> <!--절대경로 : 루트는 보통 localhost:9999를 의미하지만 (xml,include,forward에서만 루트는 Mission-Web을 의미한다)  -->
+	</footer>
 </body>
 <!-- 
 값을 write.jsp 페이지로 보냄

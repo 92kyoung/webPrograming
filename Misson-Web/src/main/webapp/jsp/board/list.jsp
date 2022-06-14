@@ -50,6 +50,9 @@
 <meta charset="UTF-8">
 <!--url경로: http://localhost:9999/Mission-Web/jsp/board/list.jsp -->
 <title>전체 게시판 조회</title>
+
+<link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
+<link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
 <script src="/Misson-Web/resource/js/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -64,20 +67,27 @@
 
 </head>
 <body>
-  	<div align="center">  <!-- align:center 가운데정렬 -->
+	<header>
+		<jsp:include page="/jsp/include/topMenu.jsp"/>
+	</header>
+	<section>
+		<div align="center">  <!-- align:center 가운데정렬 -->
 		<hr>
 		<h2>전체 게시글 조회</h2>
 		<hr>
 		
-		<table border="1" style="width:80%">
+		<table border="1" style="width:100%">
 			<tr>
-				<td width="7%" align="center">번호</td>
-				<td>제목</td>
-				<td width="16%">작성자</td>
-				<td width="20%">등록일</td>
+				<th width="7%" align="center">번호</th>
+				<th>제목</th>
+				<th width="16%">작성자</th>
+				<th width="20%">등록일</th>
 		    </tr>
-	 		<c:forEach items="${ list }" var="board">
-		    <tr>
+	 		<c:forEach items="${ list }" var="board" varStatus="loop">
+		    <tr <c:if test="${ loop.count mod 2 eq 0 }">class="even"</c:if>>
+		         <!-- varStatus는 first, last, index, count 존재 count는 1부터 순자 셈 
+		         	짝수인 수에만 even class 붙임
+		         -->
 		    	<td> ${ board.no } </td>
 		    	<td> 
 		    		<a href="detail.jsp?no=${board.no}"> 
@@ -92,7 +102,15 @@
 	 		</c:forEach>
 		</table>
 		<br>
-		<button id="addBtn">새글등록</button>
+		<c:if test="${ not empty userVO }">
+			<button id="addBtn" onclick="location.href='writeForm.jsp'">새글등록</button>
+		</c:if>
 	</div>
+	</section>
+	<footer>
+		<%@ include file="/jsp/include/footer.jsp" %> <!-- 지시자 include --> <!--절대경로 : 루트는 보통 localhost:9999를 의미하지만 (xml,include,forward에서만 루트는 Mission-Web을 의미한다)  -->
+	
+	</footer>
 </body>
 </html>
+

@@ -22,6 +22,7 @@
 	String post = request.getParameter("post");
 	String basic_addr = request.getParameter("basic_addr");
 	String detail_addr = request.getParameter("detail_addr");
+	String type = request.getParameter("type");
 	
 	MemberVO member = new MemberVO();
 	member.setId(id);
@@ -36,6 +37,7 @@
 	member.setPost(post);
 	member.setBasic_addr(basic_addr);
 	member.setDetail_addr(detail_addr);
+	member.setType(type);
 	
 	MemberDAO dao = new MemberDAO();
 	dao.insertMember(member);

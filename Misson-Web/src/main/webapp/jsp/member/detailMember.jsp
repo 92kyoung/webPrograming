@@ -9,7 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <title>회원상세정보조회</title>
+
+
+<link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
+<link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
 </head>
+
 <!-- <script>
 	let pwd = window.prompt(");
 	alert("pwd": pwd)
@@ -25,7 +30,7 @@
 	3.화면에 출력
 
 */
-	//13id 추출
+	//1.id 추출
 	String id = request.getParameter("id");
 
 	//2.추출한 id를 memberDAO의 selectById로 전달
@@ -39,9 +44,14 @@
 
 
 %>
+
 <body>
-  <div align="center">
-	<table border="1" style="width: 80%">
+	<header>
+		<jsp:include page="/jsp/include/topMenu.jsp"/>
+	</header>
+	<section>
+		 <div align="center">
+	<table border="1" style="width: 100@%">
 		<tr>
 			<th width="25%">아이디</th>
 			<td>${ member.id }</td>
@@ -77,19 +87,33 @@
 		    		<td>미입력</td>
 		    	</c:when>
 		    	<c:otherwise>
-		    		<td>${ member.tel1 }-${ member.tel2 }-${ member.tel3 }</td>
+		    		<td>${ member.tel1 }${ member.tel2 }${ member.tel3 }</td>
 		    	</c:otherwise>
 		    </c:choose>
 	 	</tr>
 
 		<tr>
 			<th width="25%">우편번호</th>
-			<td>${ member.post }</td>
+			<c:choose>
+				<c:when test="${ empty member.post}">
+					<td>미입력</td>
+				</c:when>
+				<c:otherwise>
+					<td>${ member.post }</td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		
 		<tr>
 			<th width="25%">주소</th>
-			<td>${ member.basic_addr }${ member.detail_addr }</td>
+			<c:choose>
+				<c:when test="${ empty member.basic_addr}">
+					<td>미입력</td>
+				</c:when>
+				<c:otherwise>
+					<td>${ member.basic_addr } ${ member.detail_addr }</td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		
 		<tr>
@@ -102,7 +126,12 @@
 			<td>${ member.reg_date }</td>
 		</tr>
 	</table>
-	<button onclick="showMemberList.jsp">목 록</button>&nbsp;&nbsp;
+	<button onclick="location.href='showMemberList.jsp'">목 록</button>&nbsp;&nbsp;
   </div>
+	</section>
+	<footer>
+		<%@ include file="/jsp/include/footer.jsp" %> <!-- 지시자 include --> <!--절대경로 : 루트는 보통 localhost:9999를 의미하지만 (xml,include,forward에서만 루트는 Mission-Web을 의미한다)  -->
+	</footer>
 </body>
 </html>
+

@@ -43,11 +43,16 @@
 	ResultSet rs = pstmt.executeQuery();
  */
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>게시판 글 상세 페이지</title>
+
+<link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
+<link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
+
 
 <script>
 	function doAction(type){
@@ -75,10 +80,13 @@
 
 </script>
 
-
 </head>
 <body>
-	<div align="center">
+	<header>
+		<jsp:include page="/jsp/include/topMenu.jsp"/>
+	</header>
+	<section>
+		<div align="center">
 	 <hr>
 	 	<h2>게시판 상세</h2>
 	 <hr>
@@ -118,7 +126,10 @@
 	<button onclick="doAction('D')">삭 제</button>&nbsp;&nbsp;
 	<button onclick="doAction('L')">목 록</button>&nbsp;&nbsp;
 	</div>
-	
-		
+	</section>
+	<footer>
+		<%@ include file="/jsp/include/footer.jsp" %> <!-- 지시자 include --> <!--절대경로 : 루트는 보통 localhost:9999를 의미하지만 (xml,include,forward에서만 루트는 Mission-Web을 의미한다)  -->
+	</footer>
 </body>
 </html>
+
