@@ -1,3 +1,5 @@
+<%@page import="kr.ac.kopo.board.vo.BoardFileVO"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.ac.kopo.board.vo.BoardVO"%>
 <%@page import="kr.ac.kopo.board.dao.BoardDAO"%>
 <%@page import="java.sql.ResultSet"%>
@@ -21,13 +23,19 @@
 //번호 추출 해서 db t_board 에 해당하는 정보를 가져오기
 //그리고 화면에 출력하기
 	int no = Integer.parseInt(request.getParameter("no"));
-
 	BoardDAO dao = new BoardDAO();
+    
+	//1. 게시물 조회
 	BoardVO board =  dao.selectByNo(no);
 	
-	// 저 보드를 화면에 출력하고 싶다 => 공유영역에 등록을 해야한다. 
-			
+	//2. 첨부파일 조회
+	List<BoardFileVO> fileList = dao.selectFileByNo(no);
+	
+	//3. 공유영역 등록
+	// 저 보드를 화면에 출력하고 싶다 => 공유영역에 등록을 해야한다. 		
 	pageContext.setAttribute("board", board);
+	pageContext.setAttribute("fileList", fileList);
+	
 	
 
 /* 
@@ -99,7 +107,7 @@
 			
 			<tr>
 				<th width="25%">제목</th>
-				<td>${ board.content}</td>
+				<td>${ board.title}</td>
 			</tr>
 			
 			<tr>
@@ -120,6 +128,19 @@
 			<tr>
 				<th width="25%">등록일</th>
 				<td>${ board.regDate }</td>
+			</tr>
+			
+			<tr>
+				<th>첨부파일</th>
+				<td>
+					<c:forEach items="${ fileList }" var="fileVO">
+						<a href="/Mission-Web/upload/${ fileVO.fileSaveName }">
+							${ fileVO.fileOriName }
+						</a> 
+						(${ fileVO.fileSize }bytes)
+						<br>
+					</c:forEach>
+				</td>
 			</tr> 
 	 </table>
 	<button onclick="doAction('U')">수 정</button>&nbsp;&nbsp;

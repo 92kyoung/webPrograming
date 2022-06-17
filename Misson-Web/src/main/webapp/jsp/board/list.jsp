@@ -53,7 +53,7 @@
 
 <link rel="stylesheet" href="/Mission-Web/resources/css/layout.css">
 <link rel="stylesheet" href="/Mission-Web/resources/css/table.css">
-<script src="/Misson-Web/resource/js/jquery-3.6.0.min.js"></script>
+<script src="/Mission-Web/resources/js/jquery-3.6.0.min.js"></script>
 
 <script>
 	$(document).ready(function(){
@@ -61,9 +61,23 @@
 		$('#addBtn').click(function(){
 			location.href='writeForm.jsp' 
 		})
-		
 	})
+	
+ 	function checkLogin(boardNo){
+		<c:choose>
+			<c:when test="${empty userVO}">
+				if(confirm('로그인 후 사용가능합니다\n 로그인 페이지로 이동할까요?')){
+					location.href="/Mission-Web/jsp/login/login.jsp"				
+				} 
+			</c:when>
+			
+			<c:otherwise>
+				location.href="detail.jsp?no="+boardNo
+			</c:otherwise>
+		</c:choose>
+	}
 </script>
+	
 
 </head>
 <body>
@@ -90,11 +104,16 @@
 		         -->
 		    	<td> ${ board.no } </td>
 		    	<td> 
-		    		<a href="detail.jsp?no=${board.no}"> 
+				    <a href="javascript:checkLogin(${board.no})"> 
+		    			<c:out value="${board.title} " /> 
+		    		</a> 
+				<%-- 		    		
+					<a href="detail.jsp?no=${board.no}"> 
 		    			<c:out value="${board.title} " />  <!-- el대신 out 태그 사용 
 		    			제목에 html 태그를 쓰면 그 태그를 html로 읽게 하면 악성코드를 심을 수 있다. 
 		    			그래서 out 태그를 써서 html 태그도 문자열로 인식하게 만듬 -->
-		    		</a> 
+		    		</a>  
+		    		--%>
 		    	</td>
 		    	<td> ${ board.writer } </td>
 		    	<td> ${ board.regDate } </td>

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.ac.kopo.board.vo.BoardFileVO;
 import kr.ac.kopo.board.vo.BoardVO;
 import kr.ac.kopo.util.ConnectionFactory;
 import kr.ac.kopo.util.JDBCClose;
@@ -69,7 +70,26 @@ public class BoardDAO {
 			return list;
 	}
 	
+
+	//	새글 등록을 위한 seq_t_board_no의 시퀀스 추출
 	
+	public int selectBoardNo() {
+		String sql = " select seq_t_board_no.nextval from dual";
+	
+		try(Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+	       ){
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
 	
 	/**
 	 * 새글등록
@@ -85,13 +105,15 @@ public class BoardDAO {
 			StringBuilder sql = new StringBuilder();
 			/* 시퀀스 다음 값 추출 할 때는 nextval */
 			sql.append("insert into t_board(no, title, writer, content) ");
-			sql.append(" values(seq_t_board_no.nextval, ?, ?, ?) ");
+			sql.append(" values(?, ?, ?, ?) ");
 			
 			pstmt = conn.prepareStatement(sql.toString());
 			
-			pstmt.setString(1, board.getTitle()); // 첫번째 ? 자리에 제목 집어넘
-			pstmt.setString(2, board.getWriter()); 
-			pstmt.setString(3, board.getContent()); 
+			int loc = 1; 
+			pstmt.setInt(loc++, board.getNo()); // 첫번째 ? 자리에 번호 집어넘
+			pstmt.setString(loc++, board.getTitle()); // 두번째 ? 자리에 제목 집어넘
+			pstmt.setString(loc++, board.getWriter()); 
+			pstmt.setString(loc++, board.getContent()); 
 			
 			pstmt.executeUpdate();
 			
@@ -140,4 +162,67 @@ public class BoardDAO {
 			
 		return null;  //아무것도 조회되지 않을 때 null 출력
 	}
+	
+	//첨부파일 crud
+	
+public void insertBoardFile(BoardFileVO fileVO) {
+		System.out.println(fileVO);
+		StringBuilder sql = new StringBuilder();
+		sql.append("insert into t_board_file( ");
+		sql.append("              no, board_no, file_ori_name ");
+		sql.append("              , file_save_name, file_size) ");
+		sql.append(" values(seq_t_board_file_no.nextval, ?, ?, ?, ?) ");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		) {
+			 pstmt.setInt(1, fileVO.getBoardNo());
+			 pstmt.setString(2, fileVO.getFileOriName());
+			 pstmt.setString(3, fileVO.getFileSaveName());
+			 pstmt.setInt(4, fileVO.getFileSize());
+			 
+			 pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	//첨부파일 조회
+public List<BoardFileVO> selectFileByNo(int boardNo) {
+		
+		List<BoardFileVO> fileList = new ArrayList<>();
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select no, file_ori_name, file_save_name, file_size ");
+		sql.append("  from t_board_file ");
+		sql.append(" where board_no = ? ");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		) {
+			pstmt.setInt(1, boardNo);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardFileVO fileVO = new BoardFileVO();
+				fileVO.setNo(rs.getInt("no"));
+				fileVO.setFileOriName(rs.getString("file_ori_name"));
+				fileVO.setFileSaveName(rs.getString("file_save_name"));
+				fileVO.setFileSize(rs.getInt("file_size"));
+				
+				fileList.add(fileVO);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return fileList;
+	}
+	
 }
