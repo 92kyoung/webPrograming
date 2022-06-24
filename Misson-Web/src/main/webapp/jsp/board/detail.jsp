@@ -1,6 +1,6 @@
 <%@page import="kr.ac.kopo.board.vo.BoardFileVO"%>
-<%@page import="java.util.List"%>
 <%@page import="kr.ac.kopo.board.vo.BoardVO"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.ac.kopo.board.dao.BoardDAO"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -19,12 +19,14 @@
 	3. 조회된 게시물을 화면에 출력
 */
 
-
 //번호 추출 해서 db t_board 에 해당하는 정보를 가져오기
 //그리고 화면에 출력하기
 	int no = Integer.parseInt(request.getParameter("no"));
 	BoardDAO dao = new BoardDAO();
-    
+   
+	//0. 조회수 증가시키기
+	dao.addViewCnt(no);
+	
 	//1. 게시물 조회
 	BoardVO board =  dao.selectByNo(no);
 	

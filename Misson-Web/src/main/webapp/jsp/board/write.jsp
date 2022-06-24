@@ -1,9 +1,9 @@
 <%@page import="kr.ac.kopo.board.vo.BoardFileVO"%>
+<%@page import="kr.ac.kopo.board.vo.BoardVO"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="kr.ac.kopo.util.KopoFileNamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
-<%@page import="kr.ac.kopo.board.vo.BoardVO"%>
 <%@page import="kr.ac.kopo.board.dao.BoardDAO"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="kr.ac.kopo.util.ConnectionFactory"%>
@@ -17,12 +17,15 @@
      -->
      
 <%
-
+ 	//method가 post인 방식은 파라미터 값이 넘어올 때 한글이 깨지므로 꼭 캐릭터 인코딩을 해주어야 한다. 
 	request.setCharacterEncoding("utf-8");
+	
+	//첨부파일 저장 경로 ( upload 파일 > 우클릭 > properties > location )
 	String saveFolder = "D:/git-workspace/Misson-Web/src/main/webapp/upload";
-//  ↓ request 객체,               ↓ 저장될 서버 경로,       ↓ 파일 최대 크기,    ↓ 인코딩 방식,       ↓ 같은 이름의 파일명 방지 처리
-// (HttpServletRequest request, String saveDirectory, int maxPostSize, String encoding, FileRenamePolicy policy)
-// 아래와 같이 MultipartRequest를 생성만 해주면 파일이 업로드 된다.(파일 자체의 업로드 완료)
+	
+	//  ↓ request 객체,               ↓ 저장될 서버 경로,       ↓ 파일 최대 크기,    ↓ 인코딩 방식,       ↓ 같은 이름의 파일명 방지 처리
+	// (HttpServletRequest request, String saveDirectory, int maxPostSize, String encoding, FileRenamePolicy policy)
+	// 아래와 같이 MultipartRequest를 생성만 해주면 파일이 업로드 된다.(파일 자체의 업로드 완료)
 	
 	MultipartRequest multi = new MultipartRequest(
 			request,

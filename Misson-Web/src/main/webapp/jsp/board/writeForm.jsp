@@ -30,7 +30,9 @@
 			return false
 		}
 		
-/* 		if(f.writer.value==''){ 
+    /* 		
+      //사용자로부터 더이상 작성자를 입력받지 않으므로 삭제
+      if(f.writer.value==''){ 
 			f.writer.focus() 
 			alert('작성자를 입력하세요')
 			return false
@@ -44,7 +46,7 @@
 		}
 	
 		//첨부파일 확장자 체크
-		if(checkExt(f.attachfile1)){
+		if(checkExt(f.attachfile1)){ // 첨부파일 확장자가 금지 확장자 이면 
 			return false
 		}
 		if(checkExt(f.attachfile2)){
@@ -63,6 +65,7 @@
 		for(let i =0; i<forbidName.length; i++){
 			if(forbidName[i]==ext){
 				alert('['+ext+'] 확장자는 파일 업로드 정책에 위배됩니다. ')
+				 return true //금지 확장자일 경우 
 			}
 		}
 		return false

@@ -150,7 +150,6 @@ public class BoardDAO {
 				String content = rs.getString("content");
 				int viewCnt = rs.getInt("view_cnt");
 				String regDate = rs.getString("reg_date");
-				
 				BoardVO board = new BoardVO(boardNo, title, writer, content, viewCnt, regDate);
 				
 				return board;
@@ -165,7 +164,7 @@ public class BoardDAO {
 	
 	//첨부파일 crud
 	
-public void insertBoardFile(BoardFileVO fileVO) {
+	public void insertBoardFile(BoardFileVO fileVO) {
 		System.out.println(fileVO);
 		StringBuilder sql = new StringBuilder();
 		sql.append("insert into t_board_file( ");
@@ -191,7 +190,7 @@ public void insertBoardFile(BoardFileVO fileVO) {
 	
 	
 	//첨부파일 조회
-public List<BoardFileVO> selectFileByNo(int boardNo) {
+	public List<BoardFileVO> selectFileByNo(int boardNo) {
 		
 		List<BoardFileVO> fileList = new ArrayList<>();
 		
@@ -223,6 +222,23 @@ public List<BoardFileVO> selectFileByNo(int boardNo) {
 		}
 		
 		return fileList;
+	}
+
+	//조회수
+	public void addViewCnt(int no) {
+		String sql = "update t_board set view_cnt=view_cnt+1 where no = ? ";
+		
+		try(
+				Connection conn = new ConnectionFactory().getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)
+				){
+			pstmt.setInt(1, no);
+			
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

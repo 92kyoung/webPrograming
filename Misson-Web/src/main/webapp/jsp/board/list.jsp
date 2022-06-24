@@ -1,5 +1,6 @@
 
 <%@page import="kr.ac.kopo.board.vo.BoardVO"%>
+<%-- <%@page import="kr.ac.kopo.vo.BoardVO"%> --%>
 <%@page import="java.util.List"%>
 <%@page import="kr.ac.kopo.board.dao.BoardDAO"%>
 <%@page import="kr.ac.kopo.util.JDBCClose"%>
